@@ -8,7 +8,8 @@ react-native link react-native-vector-icons
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import { Dimensions } from 'react-native'
-import Icon  from 'react-native-vector-icons/FontAwesome'
+import Icon  from 'react-native-vector-icons'
+// <ion-icon name="people"></ion-icon>
 
 export default class App extends Component {
   render() {
