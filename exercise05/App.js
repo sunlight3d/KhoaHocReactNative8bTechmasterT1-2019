@@ -8,8 +8,7 @@ react-native link react-native-vector-icons
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 import { Dimensions } from 'react-native'
-import Icon  from 'react-native-vector-icons'
-// <ion-icon name="people"></ion-icon>
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class App extends Component {
   render() {
@@ -28,7 +27,7 @@ export default class App extends Component {
               <Text style={styles.normalText}>Copenhagen, Sweden</Text>
             </View>
             <View style={styles.rateView}>
-              <Icon name={'star'} size={20} color='red'/>
+              <Icon name={'star'} size={20} color={'red'}/>
               <Text style={[styles.normalText, {color: 'red'}]}>10</Text>
             </View>
           </View>
