@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        resizeMode: Image.resizeMode.cover,
+        resizeMode: 'cover',
         // resizeMode: Image.resizeMode.contain,
     },
     textItem:{

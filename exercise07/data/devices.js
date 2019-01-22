@@ -15,7 +15,7 @@ export var devices = [
         id: 3,
         deviceName: "A SODIMM memory module",
         description: "In the past, some laptops have used a desktop processor instead of the laptop version and have had high performance gains at the cost of greater weight, heat, and limited battery life, but the practice was largely extinct as of 2013. Unlike their desktop counterparts, laptop CPUs are nearly impossible to overclock.",
-        deviceURL: "https://images-na.ssl-images-amazon.com/images/I/41aHBQMWKkL._SX463_.jpg",\
+        deviceURL: "https://is2-ssl.mzstatic.com/image/thumb/Purple118/v4/f7/fd/36/f7fd36c0-b14e-b762-d51a-b1158ac8ce88/pr_source.png/300x0w.jpg",
     },
     {
         id: 4,
@@ -27,7 +27,7 @@ export var devices = [
         id: 5,
         deviceName: "Refrigerators 1930s",
         description: "his is partly attributable to the addition of new features, such as auto-defrost, that reduced efficiency. Additionally, after World War 2, refrigerator style became more important than efficiency.",
-        deviceURL: "http://icpe.si/wp-content/uploads/2017/09/Door-in-Door-12g.jpg",
+        deviceURL: "https://cellphones.com.vn/media/catalog/product/cache/7/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone-6s-gold_3_1.png",
     },
     {
         id: 6,
