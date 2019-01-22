@@ -23,22 +23,7 @@ class Device extends Component{
     }
 }
 
-export default class Devices extends Component{
-    static navigationOptions = {
-        headerTitle: "Home",       
-        headerTitleStyle: {
-            // fontWeight: '500',
-            // fontSize: 50,
-            // marginTop: 5,
-            textAlign: 'center', 
-            alignSelf: 'center'
-        },        
-        headerStyle: {
-            backgroundColor: 'darkred',
-        },
-        headerTintColor: 'white',
-    };
-    
+export default class Devices extends Component{    
     constructor(props){
         super(props);
     }
