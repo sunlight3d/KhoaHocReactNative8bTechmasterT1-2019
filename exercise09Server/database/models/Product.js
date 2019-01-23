@@ -87,7 +87,6 @@ const deleteProduct = async (productId, tokenKey) => {
         throw error
     }
 }
-c
 module.exports = {
     insertProduct,
     queryProducts,

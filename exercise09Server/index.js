@@ -17,8 +17,7 @@ app.use(bodyParser.json())
 //Tuỳ biến Router
 const productRouter  = require('./routers/productRouter')
 
-app.use('/users', usersRouter)
-app.use('/blogposts', productRouter)
+app.use('/products', productRouter)
 //Start server
 app.listen(PORT, () => {
     console.log(`Server app listening on port ${PORT}!`)
