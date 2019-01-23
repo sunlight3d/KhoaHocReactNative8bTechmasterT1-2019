@@ -8,13 +8,13 @@ react-native link react-native-vector-icons
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TextInput} from 'react-native';
 import { Dimensions } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: ""
+      name: "",
+      email: '',
     }
   }
   render() {
@@ -24,12 +24,28 @@ export default class App extends Component {
         <TextInput
           style={styles.textInput}
           placeholder="Enter your name"
-          onChangeText={(text) => this.setState({name: text})}
-          value={this.state.name}
+          onChangeText={
+            (typedText) => this.setState({name:typedText})
+          }
+          autoCorrect={false}
+          // value={this.state.name}
+        >
+        </TextInput>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your email"
+          onChangeText={
+            (typedText) => this.setState({email:typedText})
+          }
+          autoCorrect={false}
+          // value={this.state.name}
         >
         </TextInput>
         <Text style={styles.normalText}>You typed: </Text>
         <Text style={[styles.boldText,{color: 'red'}]}>{this.state.name}</Text>
+        <Text style={[styles.boldText,{color: 'red'}]}>
+          {`Email: ${this.state.email}`}
+        </Text>
         
       </View>
     );
@@ -37,13 +53,19 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: 'center'
+  },
   normalText:{
     fontSize: 16,
     color:'black'
   },
   textInput: {
     width: 280,
-    height: 45
+    height: 45,
+    fontSize: 20,
   },
   boldText:{
     fontSize: 16,
