@@ -5,17 +5,19 @@ import {devices} from '../data/devices.js';
 class Device extends Component{        
 
     render(){
-        let backgroundColor = this.props.index % 2 == 0 ? 'darksalmon' : 'darkseagreen';
+        let backgroundColor1 = this.props.index % 2 == 0 ? 'darksalmon' : 'darkseagreen';
+        //extract attribute
+        let {deviceURL,deviceName,description} = this.props.item;
         return(
-            <View style={[styles.listItem, {backgroundColor}]}>
+            <View style={[styles.listItem, {backgroundColor:backgroundColor1}]}>
                 <View style={{width: '15%', justifyContent: 'center'}}>
-                    <Image source={{uri: this.props.item.deviceURL}}
+                    <Image source={{uri: deviceURL}}
                     style = {styles.deviceImage}                    
                     />
                 </View>
                 <View style={{width: '85%',}} >
-                    <Text style={styles.textItem}>{this.props.item.deviceName}</Text>
-                    <Text numberOfLines={2} style={styles.descriptionItem}>{this.props.item.description}</Text>
+                    <Text style={styles.textItem}>{deviceName}</Text>
+                    <Text numberOfLines={2} style={styles.descriptionItem}>{description}</Text>
                     <View style={styles.bottomLine}></View>
                 </View>
             </View>
@@ -24,30 +26,28 @@ class Device extends Component{
 }
 
 export default class Devices extends Component{    
-    constructor(props){
-        super(props);
-    }
 
     _renderItem = ({ item, index }) =>(
-        <TouchableOpacity
-                onPress={()=>{
-                    // alert("ss");
+        <Device
+            // {...item}
+            item={item}
+            index={index}
+        />
+        // <TouchableOpacity
+        //         onPress={()=>{
+        //             // alert("ss");
                     
-                }}
-            >
-            <Device
-                // {...item}
-                item={item}                
-                index={index}
-            />
-        </TouchableOpacity>
+        //         }}
+        //     >
+           
+        // </TouchableOpacity>
     );
     render(){
         return(
             <SafeAreaView style = {styles.container}>
                 <FlatList
                     data = {devices}
-                    keyExtractor={(item, index) => `${item.id}`}
+                    keyExtractor={(device, index) => `${device.id}`}
                     renderItem={this._renderItem}
                     style={{ backgroundColor: 'darkseagreen'}}
                 />
