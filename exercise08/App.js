@@ -8,12 +8,14 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-
+import BasicSectionList from './components/BasicSectionList';
 export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        <BasicSectionList>
+          
+        </BasicSectionList>
       </View>
     );
   }
