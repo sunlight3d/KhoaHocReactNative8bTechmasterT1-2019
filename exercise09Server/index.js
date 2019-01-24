@@ -14,6 +14,11 @@ const { PORT } = require('./helpers/utility')
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+//Upload files
+const fileUpload = require('express-fileupload')
+app.use(fileUpload({
+    limits: { fileSize: 0.5 * 1024 * 1024 },  //Maximum = 0.5 MB  
+}))
 //Tuỳ biến Router
 const productRouter  = require('./routers/productRouter')
 

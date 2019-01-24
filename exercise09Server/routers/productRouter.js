@@ -136,7 +136,7 @@ router.post('/uploads', async (req, res) => {
                 message: "Cannot find files to upload"
             })
             return
-        }
+        }        
         const keys = Object.keys(req.files)
         if (keys.length === 0) {
             res.json({
@@ -145,7 +145,7 @@ router.post('/uploads', async (req, res) => {
             })
             return
         }
-        keys.forEach( async (key) => {
+        keys.forEach( async (key) => {            
             const fileName = `${Math.random().toString(36)}`
             const fileObject = await req.files[key]
             const fileExtension = fileObject.name.split('.').pop()
@@ -163,7 +163,7 @@ router.post('/uploads', async (req, res) => {
                 res.json({
                     result: "ok",
                     message: `Upload files successfully`,
-                    imageURL: destination
+                    imageURL: `${fileName}.${fileExtension}`
                 })
             }
         })
@@ -176,9 +176,14 @@ router.post('/uploads', async (req, res) => {
 })
 router.get('/getImage', async (req, res) =>{        
     let {fileName} = req.query   
-    const destination = `${path.join(__dirname, '..')}/uploads/${fileName}` 
+    const destination = `${path.join(__dirname, '..')}/uploads/${fileName}`
+    debugger;
     try {           
-        
+        fs.readFile(destination, function(err, data) {
+            if (err) throw err; // Fail if the file can't be read.
+            res.writeHead(200, {'Content-Type': 'image/jpeg'});
+            res.end(data); // Send the file data to the browser.
+        });
     } catch(error) {
         res.json({
             result: 'failed',
