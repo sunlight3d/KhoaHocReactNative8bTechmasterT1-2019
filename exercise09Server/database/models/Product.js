@@ -11,12 +11,10 @@ const ProductSchema = new Schema({
     imageURL: {type: String, default: ''},
 })
 const Product = mongoose.model('Product', ProductSchema)
-const insertProduct = async (name, description, tokenKey) => {
+const insertProduct = async (name, description, imageURL) => {
     try {
         let newProduct = await Product.create({
-            name, description,
-            date: Date.now(),
-            imageURL: signedInUser
+            name, description,imageURL
         })
         await newProduct.save()
         return newProduct
@@ -78,10 +76,7 @@ const deleteProduct = async (productId, tokenKey) => {
         let product = await Product.findById(productId)
         if (!product) {
             throw `Không tìm thấy blogpost với Id=${productId}`
-        }
-        if (signedInUser.id !== product.imageURL.toString()) {
-            throw "Ko xoá được vì bạn ko phải là tác giả bài viết"
-        }
+        }        
         await Product.deleteOne({_id: productId})
     } catch(error) {        
         throw error

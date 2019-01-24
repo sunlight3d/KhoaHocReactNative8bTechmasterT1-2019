@@ -5,6 +5,12 @@
  */
 const express = require('express')
 const router = express.Router()
+const path = require('path')
+const fs = require('fs')//fs = file system
+const promisify = require('util').promisify //Thư viện này có sẵn trong Nodejs
+const readdir = promisify(fs.readdir) //Hàm này lấy các file/folder trong thư mục
+const lstat = promisify(fs.lstat) //lstat = "list status"
+
 const { 	
     insertProduct,
     queryProducts,
@@ -17,11 +23,11 @@ router.use((req, res, next) => {
     next()
 })
 router.post('/insertProduct', async (req, res) =>{
-    let {title, content} = req.body
+    let {name, description, imageURL} = req.body
     //Client phải gửi tokenKey
     let tokenKey = req.headers['x-access-token']
     try {
-        let newProduct = await insertProduct(title, content, tokenKey)
+        let newProduct = await insertProduct(name, description, imageURL)
         res.json({
             result: 'ok',
             message: 'Thêm mới Product thành công',
@@ -90,9 +96,8 @@ router.get('/getDetailProduct', async (req, res) =>{
 router.put('/updateProduct', async (req, res) =>{			
     let {id} = req.body
     let updatedProduct = req.body
-    let tokenKey = req.headers['x-access-token']
     try {    	
-    	let product = await updateProduct(id, updatedProduct,tokenKey)
+    	let product = await updateProduct(id, updatedProduct)
         res.json({
             result: 'ok',
             message: 'Update thành công 1 Product',
@@ -120,5 +125,65 @@ router.delete('/deleteProduct', async (req, res) =>{
             message: `Ko xoá được Product. Error: ${error}`
         })
 	}
+})
+//Upload multiple files
+router.post('/uploads', async (req, res) => {
+    //Dữ liệu files đc lưu tại : req.files    
+    try {
+        if(!req.files) {
+            res.json({
+                result: "failed",
+                message: "Cannot find files to upload"
+            })
+            return
+        }
+        const keys = Object.keys(req.files)
+        if (keys.length === 0) {
+            res.json({
+                result: "failed",
+                message: "Cannot find files to upload"
+            })
+            return
+        }
+        keys.forEach( async (key) => {
+            const fileName = `${Math.random().toString(36)}`
+            const fileObject = await req.files[key]
+            const fileExtension = fileObject.name.split('.').pop()
+            const destination = `${path.join(__dirname, '..')}/uploads/${fileName}.${fileExtension}`
+            let error = await fileObject.mv(destination) //mv = move 
+            if (error) {
+                res.json({
+                    result: "failed",
+                    message: `Cannot upload files. Error: ${error}`
+                })
+                return
+            }
+            //Kiểm tra file cuối cùng trong list ?
+            if (key === keys[keys.length - 1]) {
+                res.json({
+                    result: "ok",
+                    message: `Upload files successfully`,
+                    imageURL: destination
+                })
+            }
+        })
+    } catch(error) {
+        res.json({
+            result: "failed",
+            message: `Cannot upload files. Error: ${error}`
+        })
+    }
+})
+router.get('/getImage', async (req, res) =>{        
+    let {fileName} = req.query   
+    const destination = `${path.join(__dirname, '..')}/uploads/${fileName}` 
+    try {           
+        
+    } catch(error) {
+        res.json({
+            result: 'failed',
+            message: `Ko lấy được thông tin chi tiết Product. Error: ${error}`
+        })
+    }
 })
 module.exports = router
