@@ -13,18 +13,17 @@ class Product extends Component{
     render(){
         let backgroundColor = this.props.index % 2 == 0 ? 'powderblue' : 'skyblue';
         //extract attribute
-        let {productURL,productName,description} = this.props.item;
+        let {imageURL,name,description} = this.props.item;
         return(
             <View style={[styles.listItem, {backgroundColor}]}>
                 <View style={{width: '15%', justifyContent: 'center'}}>
-                    <Image source={{uri: productURL}}
+                    <Image source={{uri: imageURL}}
                     style = {styles.productImage}                    
                     />
                 </View>
                 <View style={{width: '85%',}} >
-                    <Text style={styles.textItem}>{productName}</Text>
+                    <Text style={styles.textItem}>{name}</Text>
                     <Text numberOfLines={2} style={styles.descriptionItem}>{description}</Text>
-                    <View style={styles.bottomLine}></View>
                 </View>
             </View>
         );
@@ -39,15 +38,12 @@ export default class Products extends Component{
         }
     }    
     getMoviesFromApi = async () => {
-        alert('aa')
         try {
             let response = await fetch(URL_DEVICE_LIST)
-            alert(response)
             let responseJson = await response.json()
             if(responseJson.result === "ok") {
                 this.setState({products: responseJson.data})
             }
-            return responseJson.movies;
         } catch (error) {
             alert(`Cannot get products from Api. Error: ${error}`);
         }
@@ -107,9 +103,5 @@ const styles = StyleSheet.create({
     descriptionItem:{
         fontSize: 14,        
         paddingBottom: 10
-    },    
-    bottomLine: {
-        height: 1,        
-        backgroundColor: 'gray'    
     }
 });

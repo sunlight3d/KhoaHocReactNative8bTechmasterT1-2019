@@ -9,11 +9,13 @@
  */
 const express = require('express')
 const app = express()
+var cors = require('cors')
 const { PORT } = require('./helpers/utility')
 //Nhúng middleware body-parser vào Express
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cors())
 //Upload files
 const fileUpload = require('express-fileupload')
 app.use(fileUpload({

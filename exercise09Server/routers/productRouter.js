@@ -43,6 +43,7 @@ router.post('/insertProduct', async (req, res) =>{
 //VD1: http://127.0.0.1:3000/blogposts/queryProducts?text=kinh nghiệm
 //VD2: http://127.0.0.1:3000/blogposts/queryProducts?text=xe
 router.get('/queryProducts', async (req, res) =>{	
+    debugger;
 	let {text} = req.query
     try {    	
         let products = await queryProducts(text)

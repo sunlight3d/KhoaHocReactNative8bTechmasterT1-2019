@@ -1,1 +1,3 @@
-export const URL_DEVICE_LIST = "http://127.0.0.1:3000/products/queryProducts"
+let SERVER_NAME = 'Nguyens-MBP'
+let PORT = 3000
+export const URL_DEVICE_LIST = `http://${SERVER_NAME}:${PORT}/products/queryProducts`
