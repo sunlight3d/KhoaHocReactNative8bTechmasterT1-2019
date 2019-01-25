@@ -37,7 +37,7 @@ export default class Products extends Component{
             products: []
         }
     }    
-    getMoviesFromApi = async () => {
+    getProductsFromApi = async () => {
         try {
             let response = await fetch(URL_DEVICE_LIST)
             let responseJson = await response.json()
@@ -49,7 +49,7 @@ export default class Products extends Component{
         }
     }
     async componentDidMount(){        
-        await this.getMoviesFromApi()
+        await this.getProductsFromApi()
     }
     _renderItem = ({ item, index }) =>(        
         <TouchableOpacity
