@@ -1,3 +1,8 @@
+/**
+ yarn add react-navigation
+ yarn add react-native-gesture-handler
+ * 
+ */
 import React,{Component} from 'react';
 import {FlatList, 
     Text, 
@@ -7,9 +12,13 @@ import {FlatList,
     StyleSheet, 
     TouchableOpacity} from 'react-native';
     
-import {URL_DEVICE_LIST} from '../Server/Api'
+import {URL_DEVICE_LIST,
+    URL_INSERT_PRODUCT,
+    URL_UPDATE_PRODUCT,
+    URL_DELETE_PRODUCT,
+} from '../Server/Api'
+import DetailProduct from './DetailProduct'
 class Product extends Component{        
-
     render(){
         let backgroundColor = this.props.index % 2 == 0 ? 'powderblue' : 'skyblue';
         //extract attribute
@@ -37,6 +46,25 @@ export default class Products extends Component{
             products: []
         }
     }    
+    insertProductFromApi = async (newProduct) => {
+        try {
+            let response = await fetch(URL_INSERT_PRODUCT, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newProduct),
+            })
+            let responseJson = await response.json()
+            if(responseJson.result === "ok") {
+                this.getProductsFromApi()            
+            }
+        } catch (error) {            
+            console.log(`Cannot get products from Api. Error: ${error}`)
+            this.setState({products: []})
+        }
+    }
     getProductsFromApi = async () => {
         try {
             let response = await fetch(URL_DEVICE_LIST)
@@ -44,8 +72,49 @@ export default class Products extends Component{
             if(responseJson.result === "ok") {
                 this.setState({products: responseJson.data})
             }
-        } catch (error) {
-            alert(`Cannot get products from Api. Error: ${error}`);
+        } catch (error) {            
+            console.log(`Cannot get products from Api. Error: ${error}`)
+            this.setState({products: []})
+        }
+    }
+    updateProductFromApi = async (updatedProduct) => {
+        try {
+            let response = await fetch(URL_UPDATE_PRODUCT, {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedProduct),
+            })
+            let responseJson = await response.json()
+            if(responseJson.result === "ok") {
+                this.getProductsFromApi()            
+            }
+        } catch (error) {            
+            console.log(`Cannot update product. Error: ${error}`)
+            this.setState({products: []})
+        }
+    }
+    deleteProductFromApi = async (productId) => {
+        try {
+            let response = await fetch(URL_DELETE_PRODUCT, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: productId
+                }),
+            })
+            let responseJson = await response.json()
+            if(responseJson.result === "ok") {
+                this.getProductsFromApi()            
+            }
+        } catch (error) {            
+            console.log(`Cannot get products from Api. Error: ${error}`)
+            this.setState({products: []})
         }
     }
     async componentDidMount(){        
@@ -53,18 +122,22 @@ export default class Products extends Component{
     }
     _renderItem = ({ item, index }) =>(        
         <TouchableOpacity
-                onPress={()=>{
-                    // alert("ss");
-                    
-                }}
-            >
-           <Product
-            // {...item}
-            item={item}
-            index={index}
-        />
+            onPress={() => {
+                this.props.navigation.navigate('DetailProduct', {
+                    item,
+                    insertProductFromApi, 
+                    updateProductFromApi,
+                    deleteProductFromApi,
+                    getProductsFromApi
+                })
+            }}
+        >
+            <Product                
+                item={item}
+                index={index}
+            />
         </TouchableOpacity>
-    );
+    )
     render(){
         return(
             <SafeAreaView style = {styles.container}>
