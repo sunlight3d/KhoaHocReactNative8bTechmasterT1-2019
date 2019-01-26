@@ -1,14 +1,10 @@
 import React,{Component} from 'react';
-import {FlatList, 
+import {
+    Alert, 
     Text,Image,TextInput,
     View, SafeAreaView, 
     StyleSheet, 
     TouchableOpacity} from 'react-native'
-import {URL_DEVICE_LIST,
-    URL_INSERT_PRODUCT,
-    URL_UPDATE_PRODUCT,
-    URL_DELETE_PRODUCT,
-} from '../Server/Api'
 
 export default class DetailProduct extends Component{    
     constructor(props) {
@@ -27,6 +23,7 @@ export default class DetailProduct extends Component{
     }
     _onSaveButton = () => {
         const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')
+        alert(updateProductFromApi)
         updateProductFromApi(this.state.product)
     }
     _onCancelButton = () => {
@@ -72,37 +69,50 @@ export default class DetailProduct extends Component{
                         style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({name: typedText}, previousState.product)
-                            return updatedProduct
+                            updatedProduct.name = typedText
+                            // alert(JSON.stringify(updatedProduct))
+                            return {product: updatedProduct}
                         })}  
-                        value={name}                  
+                        value={this.state.product.name}                  
                     />
                     <TextInput
                         style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
                         numberOfLines = {4}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({description: typedText}, previousState.product)
-                            return updatedProduct
+                            updatedProduct.description = typedText
+                            return {product: updatedProduct}                            
                         })}                    
-                        value={description}                  
+                        value={this.state.product.description}                  
                     />
                     <View style={styles.buttons}>
-                        <TouchableOpacity onPress={this._onSaveProduct} 
-                            style={{backgroundColor: 'red', width: '50%', justifyContent:'center', alignItems:'center'}}>
-                            <Text>
+                        <TouchableOpacity onPress={this._onSaveButton} 
+                            style={{backgroundColor: 'steelblue',
+                            width: 120,
+                            justifyContent:'center', alignItems:'center', borderRadius: 10}}>                            
+                            <Text style={{fontSize:16, color: 'white'}}>
                                 Save
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this._onCancel} style={styles.cancelButton}>
-                            <Text>
+                        <TouchableOpacity onPress={this._onCancelButton} 
+                            style={{backgroundColor: 'red',
+                            width: 120,
+                            justifyContent:'center', alignItems:'center', borderRadius: 10}}>
+                            <Text style={{fontSize:16, color: 'white'}}>
                                 Cancel
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={this._onDeleteProduct}>
-                        <Text style={styles.deleteButton}>
-                            Delete this Product
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={styles.buttons}>
+                        <TouchableOpacity onPress={this._onDeleteProduct} 
+                            style={{backgroundColor: 'red', width: '100%',                                                              
+                                justifyContent:'center', alignItems:'center', borderRadius: 10}}>
+                            <Text style={{fontSize:16, color: 'white'}}>
+                                Delete this Product
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    
                 </View>
             </SafeAreaView>
         );
@@ -128,15 +138,12 @@ const styles = StyleSheet.create({
         alignItems: 'stretch'
     },        
     buttons: {
+        marginTop: 15,  
+        marginHorizontal: 40, 
         flexDirection: 'row',
-        justifyContent:'space-around',
+        justifyContent:'space-between',
         alignItems: 'stretch',
-        height: 50
-    },
-    deleteButton: {
-        fontSize:20,
-        height: 40,
-        backgroundColor: 'red'
-    },
+        height: 40
+    },    
 
 });

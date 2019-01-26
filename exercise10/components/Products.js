@@ -92,7 +92,7 @@ export default class Products extends Component{
             })
             let responseJson = await response.json()
             if(responseJson.result === "ok") {
-                this.getProductsFromApi()            
+                await this.getProductsFromApi()            
             }
         } catch (error) {            
             console.log(`Cannot update product. Error: ${error}`)
@@ -113,7 +113,7 @@ export default class Products extends Component{
             })
             let responseJson = await response.json()
             if(responseJson.result === "ok") {
-                this.getProductsFromApi()            
+                await this.getProductsFromApi()            
             }
         } catch (error) {            
             console.log(`Cannot get products from Api. Error: ${error}`)
