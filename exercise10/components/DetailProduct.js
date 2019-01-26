@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {FlatList, 
-    Text, 
+    Text,Image,TextInput,
     View, SafeAreaView, 
     StyleSheet, 
     TouchableOpacity} from 'react-native'
@@ -13,7 +13,9 @@ import {URL_DEVICE_LIST,
 export default class DetailProduct extends Component{    
     constructor(props) {
         super(props)
-        this.state = this.props.navigation.getParam('item', {})
+        this.state = {
+            product: this.props.navigation.getParam('item', {})
+        }
     }    
     
     async componentDidMount(){        
@@ -67,7 +69,7 @@ export default class DetailProduct extends Component{
                 </View>
                 <View style={styles.view2}>
                     <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({name: typedText}, previousState.product)
                             return updatedProduct
@@ -75,7 +77,7 @@ export default class DetailProduct extends Component{
                         value={name}                  
                     />
                     <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
                         numberOfLines = {4}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({description: typedText}, previousState.product)
@@ -84,13 +86,14 @@ export default class DetailProduct extends Component{
                         value={description}                  
                     />
                     <View style={styles.buttons}>
-                        <TouchableOpacity onPress={this._onSaveProduct}>
-                            <Text style={styles.saveButton}>
+                        <TouchableOpacity onPress={this._onSaveProduct} 
+                            style={{backgroundColor: 'red', width: '50%', justifyContent:'center', alignItems:'center'}}>
+                            <Text>
                                 Save
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this._onCancel}>
-                            <Text style={styles.cancelButton}>
+                        <TouchableOpacity onPress={this._onCancel} style={styles.cancelButton}>
+                            <Text>
                                 Cancel
                             </Text>
                         </TouchableOpacity>
@@ -112,7 +115,6 @@ const styles = StyleSheet.create({
     view1: {
         flex: 35,
         flexDirection: 'row',
-        backgroundColor: 'red'
     },
     topImage: {
         flex: 1,
@@ -122,21 +124,13 @@ const styles = StyleSheet.create({
         flex: 65,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         alignItems: 'stretch'
-    },    
-    saveButton: {
-        fontSize:20,
-        height: 40,
-        backgroundColor: 'skyblue'
-    },
-    cancelButton: {
-        fontSize:20,
-        height: 40,
-        backgroundColor: 'red'
-    },
+    },        
     buttons: {
         flexDirection: 'row',
+        justifyContent:'space-around',
+        alignItems: 'stretch',
         height: 50
     },
     deleteButton: {

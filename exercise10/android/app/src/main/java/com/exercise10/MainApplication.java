@@ -1,4 +1,4 @@
-package com.exercise07;
+package com.exercise10;
 
 import android.app.Application;
 

@@ -1,6 +1,8 @@
 /**
  yarn add react-navigation
  yarn add react-native-gesture-handler
+ yarn start --reset-cache
+
  * 
  */
 import React,{Component} from 'react';
@@ -12,7 +14,7 @@ import {FlatList,
     StyleSheet, 
     TouchableOpacity} from 'react-native';
     
-import {URL_DEVICE_LIST,
+import {URL_PRODUCT_LIST,
     URL_INSERT_PRODUCT,
     URL_UPDATE_PRODUCT,
     URL_DELETE_PRODUCT,
@@ -61,19 +63,20 @@ export default class Products extends Component{
                 this.getProductsFromApi()            
             }
         } catch (error) {            
-            console.log(`Cannot get products from Api. Error: ${error}`)
+            // console.log(`Cannot get products from Api. Error: ${error}`)
             this.setState({products: []})
         }
     }
     getProductsFromApi = async () => {
-        try {
-            let response = await fetch(URL_DEVICE_LIST)
+        try {                        
+            let response = await fetch(URL_PRODUCT_LIST)         
             let responseJson = await response.json()
+            
             if(responseJson.result === "ok") {
                 this.setState({products: responseJson.data})
             }
         } catch (error) {            
-            console.log(`Cannot get products from Api. Error: ${error}`)
+            alert(`Cannot get products from Api. Error: ${error}`)
             this.setState({products: []})
         }
     }
@@ -125,10 +128,10 @@ export default class Products extends Component{
             onPress={() => {
                 this.props.navigation.navigate('DetailProduct', {
                     item,
-                    insertProductFromApi, 
-                    updateProductFromApi,
-                    deleteProductFromApi,
-                    getProductsFromApi
+                    insertProductFromApi: this.insertProductFromApi, 
+                    updateProductFromApi: this.updateProductFromApi, 
+                    deleteProductFromApi: this.deleteProductFromApi, 
+                    getProductsFromApi: this.getProductsFromApi, 
                 })
             }}
         >
