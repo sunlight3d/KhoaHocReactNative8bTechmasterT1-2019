@@ -1,6 +1,8 @@
 /**
  yarn add react-navigation
  yarn add react-native-gesture-handler
+ react-native link react-native-gesture-handler
+
  * 
  */
 import React,{Component} from 'react';
@@ -12,7 +14,7 @@ import {FlatList,
     StyleSheet, 
     TouchableOpacity} from 'react-native';
     
-import {URL_DEVICE_LIST,
+import {URL_PRODUCT_LIST,
     URL_INSERT_PRODUCT,
     URL_UPDATE_PRODUCT,
     URL_DELETE_PRODUCT,
@@ -61,19 +63,19 @@ export default class Products extends Component{
                 this.getProductsFromApi()            
             }
         } catch (error) {            
-            console.log(`Cannot get products from Api. Error: ${error}`)
+            alert(`Cannot get products from Api. Error: ${error}`)
             this.setState({products: []})
         }
     }
     getProductsFromApi = async () => {
         try {
-            let response = await fetch(URL_DEVICE_LIST)
-            let responseJson = await response.json()
+            let response = await fetch(URL_PRODUCT_LIST)
+            let responseJson = await response.json()            
             if(responseJson.result === "ok") {
                 this.setState({products: responseJson.data})
             }
         } catch (error) {            
-            console.log(`Cannot get products from Api. Error: ${error}`)
+            alert(`Cannot get products from Api. Error: ${error}`)
             this.setState({products: []})
         }
     }
@@ -92,7 +94,7 @@ export default class Products extends Component{
                 this.getProductsFromApi()            
             }
         } catch (error) {            
-            console.log(`Cannot update product. Error: ${error}`)
+            alert(`Cannot update product. Error: ${error}`)
             this.setState({products: []})
         }
     }
@@ -113,11 +115,12 @@ export default class Products extends Component{
                 this.getProductsFromApi()            
             }
         } catch (error) {            
-            console.log(`Cannot get products from Api. Error: ${error}`)
+            alert(`Cannot get products from Api. Error: ${error}`)
             this.setState({products: []})
         }
     }
-    async componentDidMount(){        
+    async componentDidMount(){       
+         
         await this.getProductsFromApi()
     }
     _renderItem = ({ item, index }) =>(        
@@ -125,10 +128,10 @@ export default class Products extends Component{
             onPress={() => {
                 this.props.navigation.navigate('DetailProduct', {
                     item,
-                    insertProductFromApi, 
-                    updateProductFromApi,
-                    deleteProductFromApi,
-                    getProductsFromApi
+                    insertProductFromApi: this.insertProductFromApi, 
+                    updateProductFromApi: this.updateProductFromApi,
+                    deleteProductFromApi: this.deleteProductFromApi,
+                    getProductsFromApi: this.getProductsFromApi
                 })
             }}
         >
@@ -145,7 +148,7 @@ export default class Products extends Component{
                     data = {this.state.products}
                     keyExtractor={(product, index) => `${product.id}`}
                     renderItem={this._renderItem}
-                    style={{ backgroundColor: 'darkseagreen'}}
+                    style={{ backgroundColor: 'red'}}
                 />
             </SafeAreaView>
         );
@@ -153,7 +156,7 @@ export default class Products extends Component{
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,        
+        flex: 1,     
     },
     listItem:{
         backgroundColor: 'white',

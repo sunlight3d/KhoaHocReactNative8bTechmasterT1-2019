@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
-import {FlatList, 
-    Text, 
+import {TextInput, 
+    Text,Image,
     View, SafeAreaView, 
-    StyleSheet, 
+    StyleSheet,ActivityIndicator,
     TouchableOpacity} from 'react-native'
 import {URL_DEVICE_LIST,
     URL_INSERT_PRODUCT,
@@ -12,12 +12,17 @@ import {URL_DEVICE_LIST,
 
 export default class DetailProduct extends Component{    
     constructor(props) {
-        super(props)
-        this.state = this.props.navigation.getParam('item', {})
+        super(props)  
+        this.state = {
+            product:{}
+        }        
     }    
-    
-    async componentDidMount(){        
-        
+
+    async componentDidMount(){           
+        await this.setState({
+            product: this.props.navigation.getParam('item', {})
+        })
+        alert(JSON.stringify(this.state.product))
     }
     _onInsertButton = () => {
         const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
@@ -55,6 +60,13 @@ export default class DetailProduct extends Component{
     
     render(){
         //extract attribute
+        if(Object.entries(this.state.product).length === 0) {
+            return (
+                <View style={{ flex: 1, padding: 20 }}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         let {imageURL,name,description} = this.state.product;
         return(
             <SafeAreaView style = {styles.container}>
