@@ -120,9 +120,9 @@ export default class Products extends Component{
             this.setState({products: []})
         }
     }
-    async componentDidMount(){       
-         
+    async componentDidMount(){                
         await this.getProductsFromApi()
+
     }
     _renderItem = ({ item, index }) =>(        
         <TouchableOpacity
@@ -142,6 +142,7 @@ export default class Products extends Component{
             />
         </TouchableOpacity>
     )
+    
     render(){
         return(
             <SafeAreaView style = {styles.container}>
@@ -151,6 +152,9 @@ export default class Products extends Component{
                     renderItem={this._renderItem}
                     style={{ backgroundColor: 'red'}}
                 />
+                <TouchableOpacity style={styles.btnAddProduct}>
+                    <Text>Add</Text>
+                </TouchableOpacity>
             </SafeAreaView>
         );
     }
@@ -180,5 +184,16 @@ const styles = StyleSheet.create({
     descriptionItem:{
         fontSize: 14,        
         paddingBottom: 10
+    },
+    btnAddProduct: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#ee6e73',
+        position: 'absolute',
+        bottom: 10,
+        right: 10, 
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
