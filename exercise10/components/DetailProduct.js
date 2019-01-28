@@ -1,36 +1,31 @@
 import React,{Component} from 'react';
-import {TextInput, 
-    Text,Image,
+import {TextInput,
+    Alert, Text,Image,
     View, SafeAreaView, 
     StyleSheet,ActivityIndicator,
     TouchableOpacity} from 'react-native'
-import {URL_DEVICE_LIST,
-    URL_INSERT_PRODUCT,
-    URL_UPDATE_PRODUCT,
-    URL_DELETE_PRODUCT,
-} from '../Server/Api'
 
 export default class DetailProduct extends Component{    
     constructor(props) {
         super(props)  
         this.state = {
             product:{}
-        }        
+        }  
     }    
 
     async componentDidMount(){           
         await this.setState({
             product: this.props.navigation.getParam('item', {})
         })
-        alert(JSON.stringify(this.state.product))
     }
     _onInsertButton = () => {
         const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
         insertProductFromApi(this.state.product)
     }
-    _onSaveButton = () => {
+    _onSaveButton = async () => {
         const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')
-        updateProductFromApi(this.state.product)
+        await updateProductFromApi(this.state.product)
+        this.props.navigation.goBack()
     }
     _onCancelButton = () => {
         this.props.navigation.goBack()
@@ -79,39 +74,53 @@ export default class DetailProduct extends Component{
                 </View>
                 <View style={styles.view2}>
                     <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({name: typedText}, previousState.product)
-                            return updatedProduct
+                            updatedProduct.name = typedText
+                            // alert(JSON.stringify(updatedProduct))
+                            return {product: updatedProduct}
                         })}  
-                        value={name}                  
+                        value={this.state.product.name}                  
                     />
                     <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
                         numberOfLines = {4}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({description: typedText}, previousState.product)
-                            return updatedProduct
+                            updatedProduct.description = typedText
+                            return {product: updatedProduct}                            
                         })}                    
-                        value={description}                  
+                        value={this.state.product.description}                  
                     />
                     <View style={styles.buttons}>
-                        <TouchableOpacity onPress={this._onSaveProduct}>
-                            <Text style={styles.saveButton}>
+                        <TouchableOpacity onPress={this._onSaveButton} 
+                            style={{backgroundColor: 'steelblue',
+                            width: 120,
+                            justifyContent:'center', alignItems:'center', borderRadius: 10}}>                            
+                            <Text style={{fontSize:16, color: 'white'}}>
                                 Save
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this._onCancel}>
-                            <Text style={styles.cancelButton}>
+                        <TouchableOpacity onPress={this._onCancelButton} 
+                            style={{backgroundColor: 'red',
+                            width: 120,
+                            justifyContent:'center', alignItems:'center', borderRadius: 10}}>
+                            <Text style={{fontSize:16, color: 'white'}}>
                                 Cancel
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={this._onDeleteProduct}>
-                        <Text style={styles.deleteButton}>
-                            Delete this Product
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={styles.buttons}>
+                        <TouchableOpacity onPress={this._onDeleteProduct} 
+                            style={{backgroundColor: 'red', width: '100%',                                                              
+                                justifyContent:'center', alignItems:'center', borderRadius: 10}}>
+                            <Text style={{fontSize:16, color: 'white'}}>
+                                Delete this Product
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    
                 </View>
             </SafeAreaView>
         );
@@ -124,7 +133,6 @@ const styles = StyleSheet.create({
     view1: {
         flex: 35,
         flexDirection: 'row',
-        backgroundColor: 'red'
     },
     topImage: {
         flex: 1,
@@ -134,27 +142,16 @@ const styles = StyleSheet.create({
         flex: 65,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         alignItems: 'stretch'
-    },    
-    saveButton: {
-        fontSize:20,
-        height: 40,
-        backgroundColor: 'skyblue'
-    },
-    cancelButton: {
-        fontSize:20,
-        height: 40,
-        backgroundColor: 'red'
-    },
+    },        
     buttons: {
+        marginTop: 15,  
+        marginHorizontal: 40, 
         flexDirection: 'row',
-        height: 50
-    },
-    deleteButton: {
-        fontSize:20,
-        height: 40,
-        backgroundColor: 'red'
-    },
+        justifyContent:'space-between',
+        alignItems: 'stretch',
+        height: 40
+    },    
 
 });

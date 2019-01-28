@@ -2,8 +2,7 @@
  yarn add react-navigation
  yarn add react-native-gesture-handler
  react-native link react-native-gesture-handler
-
- * 
+ yarn start --reset-cache
  */
 import React,{Component} from 'react';
 import {FlatList, 
@@ -70,7 +69,7 @@ export default class Products extends Component{
     getProductsFromApi = async () => {
         try {
             let response = await fetch(URL_PRODUCT_LIST)
-            let responseJson = await response.json()            
+            let responseJson = await response.json()   
             if(responseJson.result === "ok") {
                 this.setState({products: responseJson.data})
             }
@@ -81,6 +80,7 @@ export default class Products extends Component{
     }
     updateProductFromApi = async (updatedProduct) => {
         try {
+            updatedProduct.id = updatedProduct._id
             let response = await fetch(URL_UPDATE_PRODUCT, {
                 method: 'PUT',
                 headers: {
@@ -90,8 +90,9 @@ export default class Products extends Component{
                 body: JSON.stringify(updatedProduct),
             })
             let responseJson = await response.json()
+            alert(JSON.stringify(responseJson))
             if(responseJson.result === "ok") {
-                this.getProductsFromApi()            
+                await this.getProductsFromApi()            
             }
         } catch (error) {            
             alert(`Cannot update product. Error: ${error}`)
@@ -112,7 +113,7 @@ export default class Products extends Component{
             })
             let responseJson = await response.json()
             if(responseJson.result === "ok") {
-                this.getProductsFromApi()            
+                await this.getProductsFromApi()            
             }
         } catch (error) {            
             alert(`Cannot get products from Api. Error: ${error}`)
@@ -128,7 +129,7 @@ export default class Products extends Component{
             onPress={() => {
                 this.props.navigation.navigate('DetailProduct', {
                     item,
-                    insertProductFromApi: this.insertProductFromApi, 
+                    insertProductFromApi: this.insertProductFromApi,
                     updateProductFromApi: this.updateProductFromApi,
                     deleteProductFromApi: this.deleteProductFromApi,
                     getProductsFromApi: this.getProductsFromApi
