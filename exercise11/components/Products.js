@@ -16,7 +16,6 @@ import {FlatList,
     Text, 
     View, SafeAreaView, 
     Image, 
-    ActivityIndicator,
     StyleSheet, 
     TouchableOpacity} from 'react-native';
     
