@@ -23,8 +23,14 @@ export default class DetailProduct extends Component{
         insertProductFromApi(this.state.product)
     }
     _onSaveButton = async () => {
-        const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')
-        await updateProductFromApi(this.state.product)
+        if(this.props.type === "insert") {
+            const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
+            await insertProductFromApi(this.state.product)
+        } else if(this.props.type === "update") {
+            const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')
+            await updateProductFromApi(this.state.product)
+        }
+        
         this.props.navigation.goBack()
     }
     _onCancelButton = () => {
@@ -111,7 +117,7 @@ export default class DetailProduct extends Component{
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.buttons}>
+                    {this.props.type==="insert" && <View style={styles.buttons}>
                         <TouchableOpacity onPress={this._onDeleteProduct} 
                             style={{backgroundColor: 'red', width: '100%',                                                              
                                 justifyContent:'center', alignItems:'center', borderRadius: 10}}>
@@ -119,7 +125,7 @@ export default class DetailProduct extends Component{
                                 Delete this Product
                             </Text>
                         </TouchableOpacity>
-                    </View>
+                    </View>}
                     
                 </View>
             </SafeAreaView>

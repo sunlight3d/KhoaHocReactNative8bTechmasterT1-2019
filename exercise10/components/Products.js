@@ -128,8 +128,8 @@ export default class Products extends Component{
         <TouchableOpacity
             onPress={() => {
                 this.props.navigation.navigate('DetailProduct', {
-                    item,
-                    insertProductFromApi: this.insertProductFromApi,
+                    type: "update",
+                    item,                    
                     updateProductFromApi: this.updateProductFromApi,
                     deleteProductFromApi: this.deleteProductFromApi,
                     getProductsFromApi: this.getProductsFromApi
@@ -150,9 +150,16 @@ export default class Products extends Component{
                     data = {this.state.products}
                     keyExtractor={(product, index) => `${product.id}`}
                     renderItem={this._renderItem}
-                    style={{ backgroundColor: 'red'}}
                 />
-                <TouchableOpacity style={styles.btnAddProduct}>
+                <TouchableOpacity style={styles.btnAddProduct}
+                    onPress={() => {
+                        this.props.navigation.navigate('DetailProduct', {
+                            type: "insert",
+                            item,
+                            insertProductFromApi: this.insertProductFromApi,                           
+                            getProductsFromApi: this.getProductsFromApi
+                        })
+                    }}>
                     <Text>Add</Text>
                 </TouchableOpacity>
             </SafeAreaView>
