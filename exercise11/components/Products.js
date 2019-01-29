@@ -16,6 +16,7 @@ import {FlatList,
     Text, 
     View, SafeAreaView, 
     Image, 
+    ActivityIndicator,
     StyleSheet, 
     TouchableOpacity} from 'react-native';
     
@@ -24,6 +25,7 @@ import {URL_PRODUCT_LIST,
     URL_UPDATE_PRODUCT,
     URL_DELETE_PRODUCT,
 } from '../Server/Api'
+import DetailProduct from './DetailProduct'
 class Product extends Component{        
     render(){
         let backgroundColor = this.props.index % 2 == 0 ? 'powderblue' : 'skyblue';
@@ -132,7 +134,13 @@ export default class Products extends Component{
     _renderItem = ({ item, index }) =>(        
         <TouchableOpacity
             onPress={() => {
-                alert("Press item")
+                this.props.navigation.navigate('DetailProduct', {
+                    type: "update",
+                    item,                    
+                    updateProductFromApi: this.updateProductFromApi,
+                    deleteProductFromApi: this.deleteProductFromApi,
+                    getProductsFromApi: this.getProductsFromApi
+                })
             }}
         >
             <Product                
@@ -152,7 +160,11 @@ export default class Products extends Component{
                 />
                 <TouchableOpacity style={styles.btnAddProduct}
                     onPress={() => {
-                        alert("You press Add button")
+                        this.props.navigation.navigate('DetailProduct', {
+                            type: "insert",
+                            insertProductFromApi: this.insertProductFromApi,                           
+                            getProductsFromApi: this.getProductsFromApi
+                        })
                     }}>
                     <Text>Add</Text>
                 </TouchableOpacity>
