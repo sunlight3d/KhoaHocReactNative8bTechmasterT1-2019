@@ -9,24 +9,27 @@ export default class DetailProduct extends Component{
     constructor(props) {
         super(props)  
         this.state = {
-            product:{}
+            type: "",
+            product:{}            
         }  
     }    
 
-    async componentDidMount(){           
-        await this.setState({
-            product: this.props.navigation.getParam('item', {})
-        })
+    async componentDidMount(){             
+        this.setState({
+            type: this.props.navigation.getParam('type', ""),
+            product: this.props.navigation.getParam('item', {})        
+        })        
     }
     _onInsertButton = () => {
         const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
         insertProductFromApi(this.state.product)
     }
     _onSaveButton = async () => {
-        if(this.props.type === "insert") {
-            const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
-            await insertProductFromApi(this.state.product)
-        } else if(this.props.type === "update") {
+        if(this.state.type === "insert") {
+            alert("Chức năng này chưa hoạt động")
+            // const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
+            // await insertProductFromApi(this.state.product)
+        } else if(this.state.type === "update") {
             const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')
             await updateProductFromApi(this.state.product)
         }
@@ -61,26 +64,33 @@ export default class DetailProduct extends Component{
     
     render(){
         //extract attribute
-        if(Object.entries(this.state.product).length === 0) {
+        if(Object.entries(this.state.product).length === 0 && this.state.type==="update") {
             return (
                 <View style={{ flex: 1, padding: 20 }}>
                     <ActivityIndicator />
                 </View>
             )
-        }
-        let {imageURL,name,description} = this.state.product;
+        }        
         return(
             <SafeAreaView style = {styles.container}>
                 <View style={styles.view1}>
-                    <Image
-                        source={{uri: imageURL}}
+                    {this.state.product.imageURL && <Image
+                        source={{uri: this.state.product.imageURL}}
                         style={styles.topImage}
                         resizeMode='cover'
-                    />
+                    />}
+                    {!this.state.product.imageURL && <Image
+                        source={require('../images/defaultImage.png')}
+                        style={styles.topImage}
+                        resizeMode='cover'
+                    />}
                 </View>
                 <View style={styles.view2}>
                     <TextInput
-                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
+                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5,
+                            borderColor: 'gray', borderRadius: 5,
+                            borderWidth: 1, paddingLeft: 10}}
+                        placeholder={"Enter product's name"}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({name: typedText}, previousState.product)
                             updatedProduct.name = typedText
@@ -90,7 +100,10 @@ export default class DetailProduct extends Component{
                         value={this.state.product.name}                  
                     />
                     <TextInput
-                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5 }}
+                        style={{ height: 40, marginHorizontal: 10, marginVertical: 5,borderWidth: 1, 
+                            borderColor: 'gray', borderRadius: 5,
+                            paddingLeft: 10 }}
+                        placeholder={"Enter product's description"}
                         numberOfLines = {4}
                         onChangeText={(typedText) => this.setState((previousState) => {
                             let updatedProduct = Object.assign({description: typedText}, previousState.product)

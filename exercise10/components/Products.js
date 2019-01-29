@@ -3,6 +3,13 @@
  yarn add react-native-gesture-handler
  react-native link react-native-gesture-handler
  yarn start --reset-cache
+ 
+ db.getCollection('products').insert({
+    name:"iphone 5", 
+    description: "iphone 5 day ne",
+    imageURL : "https://is2-ssl.mzstatic.com/image/thumb/Purple118/v4/f7/fd/36/f7fd36c0-b14e-b762-d51a-b1158ac8ce88/pr_source.png/300x0w.jpg",        
+});
+
  */
 import React,{Component} from 'react';
 import {FlatList, 
@@ -155,7 +162,6 @@ export default class Products extends Component{
                     onPress={() => {
                         this.props.navigation.navigate('DetailProduct', {
                             type: "insert",
-                            item,
                             insertProductFromApi: this.insertProductFromApi,                           
                             getProductsFromApi: this.getProductsFromApi
                         })
