@@ -181,7 +181,13 @@ router.get('/getImage', async (req, res) =>{
     debugger;
     try {           
         fs.readFile(destination, function(err, data) {
-            if (err) throw err; // Fail if the file can't be read.
+            if (err) {
+                res.json({
+                    result: 'failed',
+                    message: `Ko lấy được thông tin chi tiết Product. Error: ${err}`
+                })
+                return
+            }
             res.writeHead(200, {'Content-Type': 'image/jpeg'});
             res.end(data); // Send the file data to the browser.
         });

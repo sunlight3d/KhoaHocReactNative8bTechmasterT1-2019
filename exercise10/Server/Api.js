@@ -1,4 +1,7 @@
-let SERVER_NAME = 'Nguyens-MBP'
+// let SERVER_NAME = 'Nguyens-MBP'
+let SERVER_NAME = 'Nguyens-MacBook-Pro.local'
+//Lay ten may tinh tu terminal:
+//hostname
 // let SERVER_NAME = 'NguyeniMac'
 
 let PORT = 3000
