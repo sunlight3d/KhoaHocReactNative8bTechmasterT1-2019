@@ -1,10 +1,19 @@
 import React,{Component} from 'react';
 import {TextInput,
     Alert, Text,Image,
-    View, SafeAreaView, ImagePicker,
+    View, SafeAreaView,
     StyleSheet,ActivityIndicator,
-    TouchableOpacity} from 'react-native'
-
+    TouchableOpacity,
+    TouchableHighlight} from 'react-native'
+/* 
+yarn add react-native-image-picker
+react-native link
+*/
+import ImagePicker from 'react-native-image-picker';
+import {
+    URL_UPLOAD_IMAGE,
+    URL_IMAGE_URL
+} from '../Server/Api'
 export default class DetailProduct extends Component{    
     constructor(props) {
         super(props)  
@@ -61,20 +70,53 @@ export default class DetailProduct extends Component{
         )
         
     }
-    _showImagePicker = () => {
-        ImagePicker.showImagePicker(options, (response) => {
-            alert('Response = ', response)
+    _showImagePicker = () => {        
+        const options = {
+            title: 'Select Avatar',         
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        }
+        ImagePicker.showImagePicker(options, (response) => {            
             if (response.didCancel) {
-                alert('User cancelled image picker');
+                alert('User cancelled image picker')
             } else if (response.error) {
-                alert('ImagePicker Error: ', response.error);
+                alert('ImagePicker Error: ', response.error)
             } else if (response.customButton) {
-                alert('User tapped custom button: ', response.customButton);
-            } else {                
-                let updatedProduct = Object.assign({imageURL: response.uri}, this.state.product)    
-                this.setState({product: updatedProduct})
+                alert('User tapped custom button: ', response.customButton)
+            } else {                                                
+                //upload image
+                this._uploadImageToServer(URL_UPLOAD_IMAGE, response.uri)
             }
         })
+    }
+    _uploadImageToServer = async (url,imageUri) => {
+        const data = new FormData();
+        data.append('photo', {
+            uri: imageUri,
+            type: 'image/jpeg', // or photo.type
+            name: 'imageFile'
+        })
+        try {
+            let response = await fetch(url, {
+                method: 'POST',
+                body: data
+            })            
+            let responseJson = await response.json()            
+            if(responseJson.result === "ok") {
+                let updatedProduct = Object.assign({}, this.state.product)                 
+                updatedProduct.imageURL = URL_IMAGE_URL+responseJson.imageURL   
+                this.setState({product: updatedProduct})
+                const getProductsFromApi = this.props.navigation.getParam('getProductsFromApi')
+                const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')                
+                await updateProductFromApi(this.state.product)
+                await getProductsFromApi()                        
+                alert(JSON.stringify(this.state.product))
+            }            
+        } catch (error) {            
+            alert(`Cannot upload image. Error: ${error}`)
+        }        
     }
     render(){
         //extract attribute
@@ -88,12 +130,15 @@ export default class DetailProduct extends Component{
         return(
             <SafeAreaView style = {styles.container}>
                 <View style={styles.view1}>
-                    {this.state.product.imageURL && <Image
-                        onPress={this._showImagePicker}
-                        source={{uri: this.state.product.imageURL}}
-                        style={styles.topImage}
-                        resizeMode='cover'
-                    />}
+                    {this.state.product.imageURL && 
+                        <TouchableHighlight onPress={this._showImagePicker} style={{flex: 1}}>
+                            <Image                                
+                                source={{uri: this.state.product.imageURL}}                                
+                                resizeMode='cover'
+                                style={styles.topImage} 
+                            />
+                        </TouchableHighlight>
+                }
                     {!this.state.product.imageURL && <Image
                         source={require('../images/defaultImage.png')}
                         style={styles.topImage}

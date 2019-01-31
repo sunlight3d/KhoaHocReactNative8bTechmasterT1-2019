@@ -29,7 +29,7 @@ class Product extends Component{
     render(){
         let backgroundColor = this.props.index % 2 == 0 ? 'powderblue' : 'skyblue';
         //extract attribute
-        let {imageURL,name,description} = this.props.item;
+        let {imageURL,name,description} = this.props.item;        
         return(
             <View style={[styles.listItem, {backgroundColor}]}>
                 <View style={{width: '15%', justifyContent: 'center'}}>
@@ -95,8 +95,7 @@ export default class Products extends Component{
                 },
                 body: JSON.stringify(updatedProduct),
             })
-            let responseJson = await response.json()
-            alert(JSON.stringify(responseJson))
+            let responseJson = await response.json()            
             if(responseJson.result === "ok") {
                 await this.getProductsFromApi()            
             }

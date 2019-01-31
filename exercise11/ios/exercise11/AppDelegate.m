@@ -1,57 +1,35 @@
-# To learn about Buck see [Docs](https://buckbuild.com/).
-# To run your application with Buck:
-# - install Buck
-# - `npm start` - to start the packager
-# - `cd android`
-# - `keytool -genkey -v -keystore keystores/debug.keystore -storepass android -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US"`
-# - `./gradlew :app:copyDownloadableDepsToLibs` - make all Gradle compile dependencies available to Buck
-# - `buck install -r android/app` - compile, install and run application
-#
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
-lib_deps = []
+#import "AppDelegate.h"
 
-for jarfile in glob(['libs/*.jar']):
-  name = 'jars__' + jarfile[jarfile.rindex('/') + 1: jarfile.rindex('.jar')]
-  lib_deps.append(':' + name)
-  prebuilt_jar(
-    name = name,
-    binary_jar = jarfile,
-  )
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
 
-for aarfile in glob(['libs/*.aar']):
-  name = 'aars__' + aarfile[aarfile.rindex('/') + 1: aarfile.rindex('.aar')]
-  lib_deps.append(':' + name)
-  android_prebuilt_aar(
-    name = name,
-    aar = aarfile,
-  )
+@implementation AppDelegate
 
-android_library(
-    name = "all-libs",
-    exported_deps = lib_deps,
-)
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  NSURL *jsCodeLocation;
 
-android_library(
-    name = "app-code",
-    srcs = glob([
-        "src/main/java/**/*.java",
-    ]),
-    deps = [
-        ":all-libs",
-        ":build_config",
-        ":res",
-    ],
-)
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
-android_build_config(
-    name = "build_config",
-    package = "com.exercise11",
-)
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+                                                      moduleName:@"exercise11"
+                                               initialProperties:nil
+                                                   launchOptions:launchOptions];
+  rootView.backgroundColor = [UIColor blackColor];
 
-android_resource(
-    name = "res",
-    package = "com.exercise11",
-    res = "src/main/res",
-)
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  return YES;
+}
 
-androi
+@end
