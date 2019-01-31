@@ -74,6 +74,7 @@ export default class Products extends Component{
     }
     getProductsFromApi = async () => {
         try {
+            alert(URL_PRODUCT_LIST)
             let response = await fetch(URL_PRODUCT_LIST)
             let responseJson = await response.json()   
             if(responseJson.result === "ok") {
