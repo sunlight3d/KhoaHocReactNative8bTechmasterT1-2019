@@ -75,6 +75,7 @@ export default class Products extends Component{
         try {
             let response = await fetch(URL_PRODUCT_LIST)
             let responseJson = await response.json()   
+            
             if(responseJson.result === "ok") {
                 this.setState({products: responseJson.data})
             }

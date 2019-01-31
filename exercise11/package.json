@@ -1,5 +1,5 @@
 {
-  "name": "exercise07",
+  "name": "exercise11",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-gesture-handler": "^1.0.15",
+    "react-native-image-picker": "^0.28.0",
     "react-navigation": "^3.0.9"
   },
   "devDependencies": {
@@ -18,7 +19,4 @@
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3"
   },
-  "jest": {
-    "preset": "react-native"
-  }
-}
+  "

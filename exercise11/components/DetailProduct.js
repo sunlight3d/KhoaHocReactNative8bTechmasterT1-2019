@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {TextInput,
     Alert, Text,Image,
-    View, SafeAreaView, 
+    View, SafeAreaView, ImagePicker,
     StyleSheet,ActivityIndicator,
     TouchableOpacity} from 'react-native'
 
@@ -61,7 +61,21 @@ export default class DetailProduct extends Component{
         )
         
     }
-    
+    _showImagePicker = () => {
+        ImagePicker.showImagePicker(options, (response) => {
+            alert('Response = ', response)
+            if (response.didCancel) {
+                alert('User cancelled image picker');
+            } else if (response.error) {
+                alert('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                alert('User tapped custom button: ', response.customButton);
+            } else {                
+                let updatedProduct = Object.assign({imageURL: response.uri}, this.state.product)    
+                this.setState({product: updatedProduct})
+            }
+        })
+    }
     render(){
         //extract attribute
         if(Object.entries(this.state.product).length === 0 && this.state.type==="update") {
@@ -75,6 +89,7 @@ export default class DetailProduct extends Component{
             <SafeAreaView style = {styles.container}>
                 <View style={styles.view1}>
                     {this.state.product.imageURL && <Image
+                        onPress={this._showImagePicker}
                         source={{uri: this.state.product.imageURL}}
                         style={styles.topImage}
                         resizeMode='cover'
