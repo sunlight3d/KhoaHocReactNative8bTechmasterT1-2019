@@ -1,6 +1,6 @@
 // let SERVER_NAME = 'Nguyens-MBP'
 // let SERVER_NAME = '192.168.1.136'
-let SERVER_NAME = '192.168.1.78'
+let SERVER_NAME = '192.168.1.133'
 //Lay ten may tinh tu terminal:
 //hostname
 // let SERVER_NAME = 'NguyeniMac'

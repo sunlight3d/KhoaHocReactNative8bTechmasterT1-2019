@@ -148,7 +148,7 @@ export default class Products extends Component{
             <SafeAreaView style = {styles.container}>
                 <FlatList
                     data = {this.state.products}
-                    keyExtractor={(product, index) => `${product.id}`}
+                    keyExtractor={(product, index) => `${product._id}`}
                     renderItem={this._renderItem}
                 />
                 <TouchableOpacity style={styles.btnAddProduct}

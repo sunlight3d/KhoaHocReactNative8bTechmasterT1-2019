@@ -1,4 +1,4 @@
-let SERVER_NAME = 'Nguyens-MBP'
+let SERVER_NAME = '192.168.1.133'
 // let SERVER_NAME = 'NguyeniMac'
 // let SERVER_NAME = '192.168.1.34'
 
