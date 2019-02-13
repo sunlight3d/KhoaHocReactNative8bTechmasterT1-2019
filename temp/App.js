@@ -1,7 +1,6 @@
 /**
  yarn add react-navigation
- yarn add react-native-gesture-handler
- react-native link 
+ yarn add react-native-gesture-handle
  react-native link react-native-gesture-handler
  */
 
