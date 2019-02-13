@@ -96,7 +96,7 @@ export default class DetailProduct extends Component{
         data.append('photo', {
             uri: imageUri,
             type: 'image/jpeg', // or photo.type
-            name: 'imageFile'
+            name: 'png'
         })
         try {
             let response = await fetch(url, {
@@ -112,7 +112,7 @@ export default class DetailProduct extends Component{
                 const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')                
                 await updateProductFromApi(this.state.product)
                 await getProductsFromApi()                        
-                alert(JSON.stringify(this.state.product))
+                // alert(JSON.stringify(this.state.product))
             }            
         } catch (error) {            
             alert(`Cannot upload image. Error: ${error}`)

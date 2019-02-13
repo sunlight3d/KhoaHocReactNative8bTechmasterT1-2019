@@ -1,8 +1,9 @@
 /**
  yarn add react-navigation
  yarn add react-native-gesture-handler
+ yarn add react-native-image-picker
  react-native link 
- react-native link react-native-gesture-handler
+
  */
 
 import Products from './components/Products'
