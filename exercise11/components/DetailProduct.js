@@ -82,7 +82,7 @@ export default class DetailProduct extends Component{
             if (response.didCancel) {
                 alert('User cancelled image picker')
             } else if (response.error) {
-                alert('ImagePicker Error: ', response.error)
+                alert(`ImagePicker Error: ${JSON.stringify(response)}`)
             } else if (response.customButton) {
                 alert('User tapped custom button: ', response.customButton)
             } else {                                                
