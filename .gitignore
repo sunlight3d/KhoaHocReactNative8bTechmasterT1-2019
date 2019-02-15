@@ -1,5 +1,7 @@
 # Built application files
 *.apk
+uploads
+uploads/
 *.ap_
 video
 video/
