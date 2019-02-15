@@ -107,7 +107,7 @@ export default class Products extends Component{
     deleteProductFromApi = async (productId) => {
         try {
             let response = await fetch(URL_DELETE_PRODUCT, {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
@@ -119,6 +119,8 @@ export default class Products extends Component{
             let responseJson = await response.json()
             if(responseJson.result === "ok") {
                 await this.getProductsFromApi()            
+            } else {
+                this.setState({products: []})
             }
         } catch (error) {            
             alert(`Cannot get products from Api. Error: ${error}`)

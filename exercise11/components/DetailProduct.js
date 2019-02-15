@@ -35,9 +35,9 @@ export default class DetailProduct extends Component{
     }
     _onSaveButton = async () => {
         if(this.state.type === "insert") {
-            alert("Chức năng này chưa hoạt động")
-            // const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
-            // await insertProductFromApi(this.state.product)
+            alert("insert")
+            const insertProductFromApi = this.props.navigation.getParam('insertProductFromApi')
+            await insertProductFromApi(this.state.product)
         } else if(this.state.type === "update") {
             const updateProductFromApi = this.props.navigation.getParam('updateProductFromApi')
             await updateProductFromApi(this.state.product)
@@ -59,9 +59,9 @@ export default class DetailProduct extends Component{
                     } 
                 },
                 { 
-                    text: 'OK', onPress: () => {
+                    text: 'OK', onPress: async () => {
                         const deleteProductFromApi = this.props.navigation.getParam('deleteProductFromApi')
-                        deleteProductFromApi(this.state.product.id)
+                        await deleteProductFromApi(this.state.product._id)
                         this.props.navigation.goBack()
                     } 
                 },
@@ -80,11 +80,11 @@ export default class DetailProduct extends Component{
         }
         ImagePicker.showImagePicker(options, (response) => {            
             if (response.didCancel) {
-                alert('User cancelled image picker')
+                // alert('User cancelled image picker')
             } else if (response.error) {
-                alert(`ImagePicker Error: ${JSON.stringify(response)}`)
+                // alert(`ImagePicker Error: ${JSON.stringify(response)}`)
             } else if (response.customButton) {
-                alert('User tapped custom button: ', response.customButton)
+                // alert('User tapped custom button: ', response.customButton)
             } else {                                                
                 //upload image
                 this._uploadImageToServer(URL_UPLOAD_IMAGE, response.uri)
@@ -127,23 +127,21 @@ export default class DetailProduct extends Component{
                 </View>
             )
         }        
+        const hasImage = this.state.product.imageURL && this.state.product.imageURL.length > 0        
+                                                
         return(
             <SafeAreaView style = {styles.container}>
                 <View style={styles.view1}>
-                    {this.state.product.imageURL && 
-                        <TouchableHighlight onPress={this._showImagePicker} style={{flex: 1}}>
-                            <Image                                
-                                source={{uri: this.state.product.imageURL}}                                
-                                resizeMode='cover'
-                                style={styles.topImage} 
-                            />
-                        </TouchableHighlight>
-                }
-                    {!this.state.product.imageURL && <Image
-                        source={require('../images/defaultImage.png')}
-                        style={styles.topImage}
-                        resizeMode='cover'
-                    />}
+                    <TouchableHighlight onPress={this._showImagePicker} style={{flex: 1}}>
+                        {hasImage ? <Image                                
+                                                source={{uri: this.state.product.imageURL}}                                
+                                                resizeMode='cover'
+                                                style={styles.topImage} />:
+                                                <Image
+                                                source={require('../images/defaultImage.png')}
+                                                style={styles.topImage}
+                                                resizeMode='cover'/>}
+                    </TouchableHighlight>
                 </View>
                 <View style={styles.view2}>
                     <TextInput
