@@ -23,14 +23,11 @@ public class MainActivity extends ReactActivity implements OnImagePickerPermissi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (listener != null)
         {
             listener.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
 }
